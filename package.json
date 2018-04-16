@@ -1,0 +1,40 @@
+{
+  "name": "board-king",
+  "version": "0.0.1",
+  "description": "Board King Game",
+  "private": true,
+  "files": [
+    "src",
+    "dist/*.js"
+  ],
+  "scripts": {
+    "build": "node build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hjl19911127/vue-drawer-layout.git"
+  },
+  "keywords": [
+    "board king",
+    "game"
+  ],
+  "author": "Alexander Huang",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/huangxsu/board-king/issues"
+  },
+  "homepage": "https://github.com/huangxsu/board-king",
+  "devDependencies": {
+    "webpack": "^4.5.0"
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
