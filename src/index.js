@@ -1,34 +1,45 @@
-var scene = new THREE.Scene();
+var data = { name: "kindeng" };
+observe(data);
+data.name = "dmq"; // 哈哈哈，监听到值变化了 kindeng --> dmq
 
-var camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
-);
-
-var renderer = new THREE.WebGLRenderer();
-
-renderer.setSize(window.innerWidth, window.innerHeight);
-
-document.body.appendChild(renderer.domElement);
-var geometry = new THREE.CubeGeometry(1, 1, 1);
-var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-var cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
-camera.position.z = 5;
-function render() {
-  requestAnimationFrame(render);
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
-  renderer.render(scene, camera);
-  stats.update();
+function observe(data) {
+  if (!data || typeof data !== "object") {
+    return;
+  }
+  // 取出所有属性遍历
+  Object.keys(data).forEach(function(key) {
+    defineReactive(data, key, data[key]);
+  });
 }
-var stats = new Stats();
-stats.setMode(1); // 0: fps, 1: ms
-// 将stats的界面对应左上角
-stats.domElement.style.position = 'absolute';
-stats.domElement.style.left = '0px';
-stats.domElement.style.top = '0px';
-document.body.appendChild( stats.domElement );
-render();
+
+function defineReactive(data, key, val) {
+  var dep = new Dep();
+  observe(val); // 监听子属性
+  Object.defineProperty(data, key, {
+    enumerable: true, // 可枚举
+    configurable: false, // 不能再define
+    get: function() {
+      return val;
+    },
+    set: function(newVal) {
+      if (val === newVal) return;
+      console.log("哈哈哈，监听到值变化了 ", val, " --> ", newVal);
+      val = newVal;
+      dep.notify();
+    }
+  });
+}
+
+function Dep() {
+  this.subs = [];
+}
+Dep.prototype = {
+  addSub: function(sub) {
+    this.subs.push(sub);
+  },
+  notify: function() {
+    this.subs.forEach(function(sub) {
+      sub.update();
+    });
+  }
+};
